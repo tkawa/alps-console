@@ -2,9 +2,17 @@ import React from 'react';
 import _ from 'lodash';
 
 class DocumentationView extends React.Component {
+  getAllDescendantNames(node) {
+    const names = [];
+    node.forEach((n) => {
+      names.push(n.data.name);
+    })
+    return names;
+  }
+
   render() {
     const semantics = this.props.semantics;
-    var trs = <tr><td>ALPS documentation not available.</td></tr>
+    var trs = <tr><td>ALPS documentation not available.</td></tr>;
     if (semantics != null) {
       trs = _.values(semantics.nodes).filter((node) => node.isRoot()).map((node) => {
         const name = node.data.name;
@@ -13,10 +21,24 @@ class DocumentationView extends React.Component {
         if (descriptor.doc != null && descriptor.doc._ != null) {
           doc = descriptor.doc._;
         }
+        let descendantLis = this.getAllDescendantNames(node).map((url) => <li>{url}</li>);
+        let icon = '';
+        switch (descriptor.type) {
+          case 'safe':
+          case 'idempotent':
+          case 'unsafe':
+            icon = <span className="glyphicon glyphicon-link text-info"></span>;
+          default:
+            icon = <span className="glyphicon glyphicon-file text-info"></span>;
+        }
+
         return (
           <tr>
-            <th title={name}>{descriptor.id}</th>
-            <td>{doc}</td>
+            <th title={name}>{icon}{descriptor.id}</th>
+            <td>
+              <p>{doc}</p>
+              <ul className="list-unstyled text-muted small">{descendantLis}</ul>
+            </td>
           </tr>
         );
       });
@@ -39,7 +61,7 @@ class DocumentationView extends React.Component {
         </div>
       </div>
     );
-  }  
+  }
 }
 
 export default DocumentationView;
