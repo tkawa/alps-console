@@ -29,8 +29,8 @@ class DocumentationView extends React.Component {
       const descriptor = node.data.descriptor;
       const rootDescriptor = rootNode.data.descriptor;
       let doc = '';
-      if (rootDescriptor.doc != null && rootDescriptor.doc._ != null) {
-        doc = rootDescriptor.doc._;
+      if (rootDescriptor.doc) {
+        doc = rootDescriptor.doc._ || rootDescriptor.doc; // TODO: Improve parsing into '_'
       }
       let descendantItems = this.getAllAncestorNames(node).map((url) => <li>{url}</li>);
       let icon = '';
