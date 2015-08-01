@@ -11,5 +11,5 @@ npm install
 ```
 
 ```
-npm run gulp
+npm run server
 ```
