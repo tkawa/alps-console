@@ -24,8 +24,12 @@ gulp.task('webserver', function() {
       livereload: true,
       proxies: [
         {
-          source: '/schema',
+          source: '/schema.org',
           target: 'http://alps.io/schema.org'
+        },
+        {
+          source: '/iana',
+          target: 'http://alps.io/iana'
         }
       ]
     })

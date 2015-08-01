@@ -10,40 +10,56 @@ class DocumentationView extends React.Component {
     return names;
   }
 
-  render() {
+  // include self
+  getAllAncestorNames(node) {
+    let nodes = node.ancestors();
+    nodes.reverse();
+    nodes.push(node);
+    return nodes.map((n) => n.data.name);
+  }
+
+  getTableRows() {
     const semantics = this.props.semantics;
-    var trs = <tr><td>ALPS documentation not available.</td></tr>;
-    if (semantics != null) {
-      trs = _.values(semantics.nodes).filter((node) => node.isRoot()).map((node) => {
-        const name = node.data.name;
-        const descriptor = node.data.descriptor;
-        let doc = '';
-        if (descriptor.doc != null && descriptor.doc._ != null) {
-          doc = descriptor.doc._;
-        }
-        let descendantLis = this.getAllDescendantNames(node).map((url) => <li>{url}</li>);
-        let icon = '';
-        switch (descriptor.type) {
-          case 'safe':
-          case 'idempotent':
-          case 'unsafe':
-            icon = <span className="glyphicon glyphicon-link text-info"></span>;
-          default:
-            icon = <span className="glyphicon glyphicon-file text-info"></span>;
-        }
-
-        return (
-          <tr>
-            <th title={name}>{icon}{descriptor.id}</th>
-            <td>
-              <p>{doc}</p>
-              <ul className="list-unstyled text-muted small">{descendantLis}</ul>
-            </td>
-          </tr>
-        );
-      });
+    if (semantics == null) {
+      return <tr><td>ALPS documentation not available.</td></tr>;
     }
+    return _.values(semantics.nodes).filter((node) => node.isLeaf()).map((node) => {
+      const name = node.data.name;
+      const rootNode = node.root();
+      const descriptor = node.data.descriptor;
+      const rootDescriptor = rootNode.data.descriptor;
+      let doc = '';
+      if (rootDescriptor.doc != null && rootDescriptor.doc._ != null) {
+        doc = rootDescriptor.doc._;
+      }
+      let descendantItems = this.getAllAncestorNames(node).map((url) => <li>{url}</li>);
+      let icon = '';
+      switch (descriptor.type) {
+        case 'safe':
+        case 'idempotent':
+        case 'unsafe':
+          icon = <span title={descriptor.type} className="glyphicon glyphicon-link text-info"></span>;
+          break;
+        default:
+          icon = <span title={descriptor.type} className="glyphicon glyphicon-file text-info"></span>;
+      }
 
+      return (
+        <tr>
+          <th>
+            {icon}
+            <span title={name}>{descriptor.id}</span>
+          </th>
+          <td>
+            <p>{doc}</p>
+            <ul className="list-unstyled text-muted small">{descendantItems}</ul>
+          </td>
+        </tr>
+      );
+    });
+  }
+
+  render() {
     return (
       <div>
         <h4>Documentation</h4>
@@ -55,7 +71,7 @@ class DocumentationView extends React.Component {
         <div className="details">
           <table className="table table-hover">
             <tbody>
-              {trs}
+              {this.getTableRows()}
             </tbody>
           </table>
         </div>
