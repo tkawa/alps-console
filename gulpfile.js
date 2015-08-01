@@ -21,17 +21,7 @@ gulp.task('webserver', function() {
   gulp.src('./')
     .pipe(webserver({
       host: '127.0.0.1',
-      livereload: true,
-      proxies: [
-        {
-          source: '/schema.org',
-          target: 'http://alps.io/schema.org'
-        },
-        {
-          source: '/iana',
-          target: 'http://alps.io/iana'
-        }
-      ]
+      livereload: true
     })
   );
 });
