@@ -12,17 +12,22 @@ class ConsoleApp extends React.Component {
     this.profileFetcher = new RewriteProfileFetcher();
     this.state = {
       currentUrl: 'http://alps.io/schema.org/Person',
-      response: (
-        <span>
-        Hi,<br /><br />
-        This is the ALPS Console - a generic client for ALPS-powered Web APIs.<br />
-        The user interface consists of three parts: the address bar on the top, this response pane, and the documentation pane.<br /><br />
-        As the name suggests, the address bar allows you to enter an URL to access the Web API.<br />
-        The response will then be rendered in the response pane and in the pane to the right you'll find the corresponding documentation.<br /><br />
-        To get started, enter the URL of the API in the address bar above and click on "Load".<br />
-        If you wish, you can use the demo ALPS at <a href="github-user-alps.json">github-user-alps.json</a>.
-        </span>
-      ),
+      response:
+`Hi,
+
+This is the ALPS Console - a generic client for ALPS-powered Web APIs.
+The user interface consists of three parts: the address bar on the top, this response pane, and the documentation pane.
+
+As the name suggests, the address bar allows you to enter an URL to access the Web API.
+The response will then be rendered in the response pane and in the pane to the right you'll find the corresponding documentation.
+
+This is a work in progress so that now this can load an URL of the ALPS profile instead of the Web API.
+
+To get started, enter the URL of the ALPS in the address bar above and click on "Load".
+If you wish, you can use the demo ALPS below.
+
+${window.location.href}github-user-alps.json
+${window.location.href}rubygems-alps.json`,
       documentation: null
     };
   }
