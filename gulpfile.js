@@ -6,7 +6,7 @@ var webserver = require('gulp-webserver');
 
 gulp.task('browserify', function() {
   browserify({entries: ['./src/App.js'], debug: true })
-    .transform(babelify.configure({plugins: ["object-assign"]}))
+    .transform(babelify)
     .bundle()
     .on("error", function (err) { console.log("Error : " + err.message); })
     .pipe(source('bundle.js'))
