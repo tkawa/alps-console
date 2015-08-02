@@ -10,7 +10,7 @@ gulp.task('browserify', function() {
     .bundle()
     .on("error", function (err) { console.log("Error : " + err.message); })
     .pipe(source('bundle.js'))
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('public'))
 });
 
 gulp.task('watch', function() {
@@ -18,7 +18,7 @@ gulp.task('watch', function() {
 });
 
 gulp.task('webserver', function() {
-  gulp.src('./')
+  gulp.src('public')
     .pipe(webserver({
       host: '127.0.0.1',
       livereload: true

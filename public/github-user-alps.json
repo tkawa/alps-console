@@ -1,0 +1,89 @@
+{
+  "alps": {
+    "version": "1.0",
+    "doc": {
+      "format": "text",
+      "value": "GitHub user info"
+    },
+    "descriptor": [
+      {
+        "id": "User",
+        "type": "semantic",
+        "href": "http://alps.io/schema.org/Person#Person",
+        "descriptor": [
+          {
+            "id": "login",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/Person#alternatename"
+          },
+          {
+            "id": "avatar_url",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/Person#image"
+          },
+          {
+            "id": "url",
+            "type": "safe",
+            "href": "http://alps.io/iana/relations#self",
+            "rt": "#User"
+          },
+          {
+            "id": "html_url",
+            "type": "safe",
+            "href": "http://alps.io/iana/relations#alternate"
+          },
+          {
+            "id": "followers_url",
+            "type": "safe",
+            "rt": "#User"
+          },
+          {
+            "id": "following_url",
+            "type": "safe",
+            "href": "http://alps.io/schema.org/Person#follows",
+            "rt": "#User"
+          },
+          {
+            "id": "repos_url",
+            "type": "safe"
+          },
+          {
+            "id": "name",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/Person#name"
+          },
+          {
+            "id": "company",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/Person#worksFor"
+          },
+          {
+            "id": "location",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/Person#homeLocation"
+          },
+          {
+            "id": "email",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/Person#email"
+          },
+          {
+            "id": "bio",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/Person#description"
+          },
+          {
+            "id": "created_at",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/CreativeWork#dateCreated"
+          },
+          {
+            "id": "updated_at",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/CreativeWork#dateModified"
+          }
+        ]
+      }
+    ]
+  }
+}

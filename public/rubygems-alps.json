@@ -1,0 +1,67 @@
+{
+  "alps": {
+    "version": "1.0",
+    "doc": {
+      "format": "text",
+      "value": "RubyGem info"
+    },
+    "descriptor": [
+      {
+        "id": "RubyGem",
+        "type": "semantic",
+        "href": "http://alps.io/schema.org/SoftwareApplication#SoftwareApplication",
+        "descriptor": [
+          {
+            "id": "name",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/SoftwareApplication#name"
+          },
+          {
+            "id": "version",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/SoftwareApplication#version"
+          },
+          {
+            "id": "authors",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/SoftwareApplication#author"
+          },
+          {
+            "id": "info",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/SoftwareApplication#description"
+          },
+          {
+            "id": "licenses",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/SoftwareApplication#license"
+          },
+          {
+            "id": "project_uri",
+            "type": "safe",
+            "href": "http://alps.io/schema.org/SoftwareApplication#url"
+          },
+          {
+            "id": "gem_uri",
+            "type": "safe",
+            "href": "http://alps.io/schema.org/SoftwareApplication#downloadUrl"
+          },
+          {
+            "id": "homepage_uri",
+            "type": "safe",
+            "href": "http://alps.io/iana/relations#related"
+          },
+          {
+            "id": "source_code_uri",
+            "type": "safe"
+          },
+          {
+            "id": "dependencies",
+            "type": "semantic",
+            "href": "http://alps.io/schema.org/SoftwareApplication#requirements"
+          }
+        ]
+      }
+    ]
+  }
+}
