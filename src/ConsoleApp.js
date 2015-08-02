@@ -11,9 +11,18 @@ class ConsoleApp extends React.Component {
     this.fetcher = new RewriteProfileFetcher();
     this.profileFetcher = new RewriteProfileFetcher();
     this.state = {
-      // nowShowing: App.ALL_TODOS,
       currentUrl: 'http://alps.io/schema.org/Person',
-      response: "Hi,\n\nThis is the ALPS Console - a generic client for ALPS-powered Web APIs. The user interface consists of three parts: the address bar on the top, this response pane, and the documentation pane.",
+      response: (
+        <span>
+        Hi,<br /><br />
+        This is the ALPS Console - a generic client for ALPS-powered Web APIs.<br />
+        The user interface consists of three parts: the address bar on the top, this response pane, and the documentation pane.<br /><br />
+        As the name suggests, the address bar allows you to enter an URL to access the Web API.<br />
+        The response will then be rendered in the response pane and in the pane to the right you'll find the corresponding documentation.<br /><br />
+        To get started, enter the URL of the API in the address bar above and click on "Load".<br />
+        If you wish, you can use the demo ALPS at <a href="github-user-alps.json">github-user-alps.json</a>.
+        </span>
+      ),
       documentation: null
     };
   }
@@ -54,7 +63,7 @@ class ConsoleApp extends React.Component {
         </div>
       </div>
     );
-  }  
+  }
 }
 
 export default ConsoleApp;

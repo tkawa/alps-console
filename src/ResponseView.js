@@ -8,7 +8,7 @@ class ResponseView extends React.Component {
         <pre>{this.props.doc}</pre>
       </div>
     );
-  }  
+  }
 }
 
 export default ResponseView;
