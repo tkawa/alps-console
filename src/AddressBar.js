@@ -25,7 +25,7 @@ class AddressBar extends React.Component {
                 <div className="input-group">
                   <UrlInput value={todo} ref="url" />
                   <span className="input-group-btn">
-                    <button id="load" className="btn btn-inverse" type="submit" data-loading-text="Loading...">
+                    <button id="load" className="btn btn-primary" type="submit" data-loading-text="Loading...">
                       <span className="glyphicon glyphicon-refresh icon-white"></span> Load
                     </button>
                   </span>
@@ -36,7 +36,7 @@ class AddressBar extends React.Component {
         </div>
       </div>
     );
-  }  
+  }
 }
 
 export default AddressBar;
