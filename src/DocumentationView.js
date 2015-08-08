@@ -28,11 +28,6 @@ class DocumentationView extends React.Component {
       const rootNode = node.root();
       const descriptor = node.data.descriptor;
       const rootDescriptor = rootNode.data.descriptor;
-      let doc = '';
-      if (rootDescriptor.doc) {
-        doc = rootDescriptor.doc._ || rootDescriptor.doc; // TODO: Improve parsing into '_'
-      }
-      let descendantItems = this.getAllAncestorNames(node).map((url) => <li>{url}</li>);
       let icon = '';
       switch (descriptor.type) {
         case 'safe':
@@ -43,6 +38,20 @@ class DocumentationView extends React.Component {
         default:
           icon = <span title={descriptor.type} className="glyphicon glyphicon-file text-info"></span>;
       }
+      let doc = '';
+      if (rootDescriptor.doc) {
+        doc = rootDescriptor.doc._ || rootDescriptor.doc; // TODO: Improve parsing into '_'
+      }
+      let descendantItems = this.getAllAncestorNames(node).map((url) => <li>{url}</li>);
+      let rt = '';
+      if (descriptor.rt) {
+        rt = (
+          <div>
+            <div className="list-heading">rt:</div>
+            <div className="text-muted small">{descriptor.rt}</div>
+          </div>
+        );
+      }
 
       return (
         <tr>
@@ -51,8 +60,14 @@ class DocumentationView extends React.Component {
             <span title={name}>{descriptor.id}</span>
           </th>
           <td>
-            <p>{doc}</p>
-            <ul className="list-unstyled text-muted small">{descendantItems}</ul>
+            <div className="doc">
+              <p>{doc}</p>
+            </div>
+            <div>
+              <div className="list-heading">Reference:</div>
+              <ul className="list-unstyled text-muted small">{descendantItems}</ul>
+            </div>
+            {rt}
           </td>
         </tr>
       );
