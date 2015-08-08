@@ -26,10 +26,19 @@ This is a work in progress so that now this can load an URL of the ALPS profile 
 To get started, enter the URL of the ALPS in the address bar above and click on "Load".
 If you wish, you can use the demo ALPS below.
 
-${window.location.href}github-user-alps.json
-${window.location.href}rubygems-alps.json`,
+${this.convertAbsoluteUrl('./github-user-alps.json')}
+${this.convertAbsoluteUrl('./rubygems-alps.json')}`,
       documentation: null
     };
+  }
+
+  convertAbsoluteUrl(path) {
+    if (typeof window === 'undefined') {
+      return path;
+    }
+    let anchor = window.document.createElement('a');
+    anchor.href = path;
+    return anchor.href;
   }
 
   fetchUrl(url) {
