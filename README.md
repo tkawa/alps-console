@@ -19,3 +19,9 @@ npm install
 ```
 npm run server
 ```
+
+## Acknowledgment
+
+This is inspired by [@lanthaler](https://github.com/lanthaler/)'s Hydra Console. Check it out.
+
+http://www.markus-lanthaler.com/hydra/console/
