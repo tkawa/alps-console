@@ -1,6 +1,7 @@
 import React from 'react';
 import {Profile, Semantics} from 'alpinist';
-import AddressBar from './AddressBar';
+import DocumentAddressBar from './DocumentAddressBar';
+import ProfileAddressBar from './ProfileAddressBar';
 import ResponseView from './ResponseView';
 import DocumentationView from './DocumentationView';
 import RewriteProfileFetcher from './RewriteProfileFetcher';
@@ -11,7 +12,8 @@ class ConsoleApp extends React.Component {
     this.fetcher = new RewriteProfileFetcher();
     this.profileFetcher = new RewriteProfileFetcher();
     this.state = {
-      currentUrl: 'http://alps.io/schema.org/Person',
+      currentDocumentUrl: 'http://example.com/api/foobar.json',
+      currentProfileUrl: 'http://alps.io/schema.org/Person',
       response:
 `Hi,
 
@@ -44,7 +46,7 @@ ${this.convertAbsoluteUrl('./rubygems-alps.json')}`,
   fetchUrl(url) {
     this.fetcher.fetch(url).then((doc) => {
       this.setState({
-        currentUrl: url,
+        currentProfileUrl: url,
         response: doc,
         documentation: null
       });
@@ -54,8 +56,6 @@ ${this.convertAbsoluteUrl('./rubygems-alps.json')}`,
     }).then((semantics) => {
       semantics.printTree();
       this.setState({
-        currentUrl: url,
-        response: this.state.response,
         documentation: semantics
       });
     }).catch((e) => {
@@ -66,12 +66,13 @@ ${this.convertAbsoluteUrl('./rubygems-alps.json')}`,
   render() {
     return (
       <div>
-        <AddressBar onSubmit={this.fetchUrl.bind(this)} todo={this.state.currentUrl} />
         <div className="row">
           <div className="col-xs-6">
+            <DocumentAddressBar onSubmit={this.fetchUrl.bind(this)} url={this.state.currentDocumentUrl} disabled={true} />
             <ResponseView doc={this.state.response} />
           </div>
           <div className="col-xs-6">
+            <ProfileAddressBar onSubmit={this.fetchUrl.bind(this)} url={this.state.currentProfileUrl} />
             <DocumentationView semantics={this.state.documentation} />
           </div>
         </div>
