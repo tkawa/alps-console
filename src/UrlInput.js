@@ -12,7 +12,7 @@ class UrlInput extends React.Component {
 
   render() {
     return (
-      <input id="url" type="url" className="form-control url-input" placeholder="http://"
+      <input id={this.props.inputId} type="url" className="form-control url-input" placeholder={this.props.placeholder}
        disabled={this.props.disabled}
        onChange={this.handleChange.bind(this)}
        value={this.state.value} />

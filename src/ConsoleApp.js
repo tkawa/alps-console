@@ -1,19 +1,20 @@
 import React from 'react';
 import {Profile, Semantics} from 'alpinist';
-import DocumentAddressBar from './DocumentAddressBar';
-import ProfileAddressBar from './ProfileAddressBar';
+import AddressBar from './AddressBar';
 import ResponseView from './ResponseView';
 import DocumentationView from './DocumentationView';
 import RewriteProfileFetcher from './RewriteProfileFetcher';
+import RewriteFetcher from './RewriteFetcher';
+import Config from './Config';
 
 class ConsoleApp extends React.Component {
   constructor(props) {
     super(props);
-    this.fetcher = new RewriteProfileFetcher();
-    this.profileFetcher = new RewriteProfileFetcher();
+    this.documentFetcher = new RewriteFetcher(Config.profileRewriters);
+    this.profileFetcher = new RewriteFetcher(Config.profileRewriters);
     this.state = {
-      currentDocumentUrl: 'http://example.com/api/foobar.json',
-      currentProfileUrl: 'http://alps.io/schema.org/Person',
+      currentDocumentUrl: this.convertAbsoluteUrl('./github-user.json'),
+      currentProfileUrl: '',
       response:
 `Hi,
 
@@ -43,11 +44,50 @@ ${this.convertAbsoluteUrl('./rubygems-alps.json')}`,
     return anchor.href;
   }
 
-  fetchUrl(url) {
-    this.fetcher.fetch(url).then((doc) => {
+  fetchUrl(documentUrl, profileUrl) {
+    let headers, link;
+    this.documentFetcher.fetch(documentUrl).then((res) => {
+      headers = res.headers;
+      return res.text();
+    }).then((doc) => {
+      link = headers.get('link'); // TODO: Multiple profiles
+      this.setState({
+        currentDocumentUrl: documentUrl,
+        currentProfileUrl: '',
+        contentType: headers.get('content-type'),
+        link: link,
+        response: doc,
+        documentation: null
+      });
+    }).then(() => {
+      profileUrl = link || profileUrl;
+      if (!profileUrl) {
+        throw 'Profile URL not found.';
+      }
+      return this.profileFetcher.fetch(profileUrl);
+    }).then((res) => res.text()).then((doc) => {
+      this.setState({
+        currentProfileUrl: profileUrl,
+        documentation: null
+      });
+      return Profile.parse(doc, profileUrl);
+    }).then((profile) => {
+      return new Semantics(profile, this.profileFetcher).build();
+    }).then((semantics) => {
+      semantics.printTree();
+      this.setState({
+        documentation: semantics
+      });
+    }).catch((e) => {
+      setTimeout(() => {throw e;});
+    });
+  }
+
+  fetchProfileUrl(url) {
+    this.profileFetcher.fetch(url).then((doc) => {
       this.setState({
         currentProfileUrl: url,
-        response: doc,
+        response: doc.text(),
         documentation: null
       });
       return Profile.parse(doc, url);
@@ -66,13 +106,12 @@ ${this.convertAbsoluteUrl('./rubygems-alps.json')}`,
   render() {
     return (
       <div>
+        <AddressBar onSubmit={this.fetchUrl.bind(this)} documentUrl={this.state.currentDocumentUrl} profileUrl={this.state.currentProfileUrl} />
         <div className="row">
           <div className="col-xs-6">
-            <DocumentAddressBar onSubmit={this.fetchUrl.bind(this)} url={this.state.currentDocumentUrl} disabled={true} />
-            <ResponseView doc={this.state.response} />
+            <ResponseView doc={this.state.response} contentType={this.state.contentType} link={this.state.link} />
           </div>
           <div className="col-xs-6">
-            <ProfileAddressBar onSubmit={this.fetchUrl.bind(this)} url={this.state.currentProfileUrl} />
             <DocumentationView semantics={this.state.documentation} />
           </div>
         </div>
