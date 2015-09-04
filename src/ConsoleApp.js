@@ -45,12 +45,12 @@ ${this.convertAbsoluteUrl('./rubygems-alps.json')}`,
   }
 
   fetchUrl(documentUrl, profileUrl) {
-    let headers, link;
+    let headers;
     this.documentFetcher.fetch(documentUrl).then((res) => {
       headers = res.headers;
       return res.text();
     }).then((doc) => {
-      link = headers.get('link'); // TODO: Multiple profiles
+      var link = headers.get('link'); // TODO: Multiple profiles
       this.setState({
         currentDocumentUrl: documentUrl,
         currentProfileUrl: '',
@@ -59,38 +59,26 @@ ${this.convertAbsoluteUrl('./rubygems-alps.json')}`,
         response: doc,
         documentation: null
       });
-    }).then(() => {
-      profileUrl = link || profileUrl;
-      if (!profileUrl) {
-        throw 'Profile URL not found.';
+      return link;
+    }).then((discoveredProfileUrl) => {
+      profileUrl = discoveredProfileUrl || profileUrl;
+      if (profileUrl) {
+        this.fetchProfileUrl(profileUrl);
+      } else {
+        console.error('Profile URL not found.');
       }
-      return this.profileFetcher.fetch(profileUrl);
-    }).then((res) => res.text()).then((doc) => {
-      this.setState({
-        currentProfileUrl: profileUrl,
-        documentation: null
-      });
-      return Profile.parse(doc, profileUrl);
-    }).then((profile) => {
-      return new Semantics(profile, this.profileFetcher).build();
-    }).then((semantics) => {
-      semantics.printTree();
-      this.setState({
-        documentation: semantics
-      });
     }).catch((e) => {
       setTimeout(() => {throw e;});
     });
   }
 
-  fetchProfileUrl(url) {
-    this.profileFetcher.fetch(url).then((doc) => {
+  fetchProfileUrl(profileUrl) {
+    this.profileFetcher.fetch(profileUrl).then((res) => res.text()).then((doc) => {
       this.setState({
-        currentProfileUrl: url,
-        response: doc.text(),
+        currentProfileUrl: profileUrl,
         documentation: null
       });
-      return Profile.parse(doc, url);
+      return Profile.parse(doc, profileUrl);
     }).then((profile) => {
       return new Semantics(profile, this.profileFetcher).build();
     }).then((semantics) => {
