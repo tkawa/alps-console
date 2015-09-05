@@ -12,9 +12,10 @@ class ConsoleApp extends React.Component {
     super(props);
     this.documentFetcher = new RewriteFetcher(Config.profileRewriters);
     this.profileFetcher = new RewriteFetcher(Config.profileRewriters);
+    this.currentPath = this.getCurrentPath();
     this.state = {
-      currentDocumentUrl: this.convertAbsoluteUrl('./github-user.json'),
-      currentProfileUrl: '',
+      documentUrl: this.currentPath + 'github-user.json',
+      profileUrl: '',
       response:
 `Hi,
 
@@ -24,23 +25,18 @@ The user interface consists of three parts: the address bar on the top, this res
 As the name suggests, the address bar allows you to enter an URL to access the Web API.
 The response will then be rendered in the response pane and in the pane to the right you'll find the corresponding documentation.
 
-This is a work in progress so that now this can load an URL of the ALPS profile instead of the Web API.
-
-To get started, enter the URL of the ALPS in the address bar above and click on "Load".
-If you wish, you can use the demo ALPS below.
-
-${this.convertAbsoluteUrl('./github-user-alps.json')}
-${this.convertAbsoluteUrl('./rubygems-alps.json')}`,
+To get started, enter the URL of the API in the address bar above and click on "Load".
+If you wish, you can use the examples below.`,
       documentation: null
     };
   }
 
-  convertAbsoluteUrl(path) {
+  getCurrentPath() {
     if (typeof window === 'undefined') {
-      return path;
+      return '/';
     }
     let anchor = window.document.createElement('a');
-    anchor.href = path;
+    anchor.href = './';
     return anchor.href;
   }
 
@@ -52,8 +48,8 @@ ${this.convertAbsoluteUrl('./rubygems-alps.json')}`,
     }).then((doc) => {
       var link = headers.get('link'); // TODO: Multiple profiles
       this.setState({
-        currentDocumentUrl: documentUrl,
-        currentProfileUrl: '',
+        documentUrl: documentUrl,
+        profileUrl: '',
         contentType: headers.get('content-type'),
         link: link,
         response: doc,
@@ -75,7 +71,7 @@ ${this.convertAbsoluteUrl('./rubygems-alps.json')}`,
   fetchProfileUrl(profileUrl) {
     this.profileFetcher.fetch(profileUrl).then((res) => res.text()).then((doc) => {
       this.setState({
-        currentProfileUrl: profileUrl,
+        profileUrl: profileUrl,
         documentation: null
       });
       return Profile.parse(doc, profileUrl);
@@ -91,16 +87,40 @@ ${this.convertAbsoluteUrl('./rubygems-alps.json')}`,
     });
   }
 
+  handleClickExample(event) {
+    event.preventDefault();
+    const documentUrl = event.currentTarget.href;
+    const profileUrl = event.currentTarget.dataset.profile;
+    this.setState({documentUrl, profileUrl});
+  }
+
   render() {
     return (
       <div>
-        <AddressBar onSubmit={this.fetchUrl.bind(this)} documentUrl={this.state.currentDocumentUrl} profileUrl={this.state.currentProfileUrl} />
+        <AddressBar onSubmit={this.fetchUrl.bind(this)} documentUrl={this.state.documentUrl} profileUrl={this.state.profileUrl} />
         <div className="row">
-          <div className="col-xs-6">
+          <div className="col-sm-6">
             <ResponseView doc={this.state.response} contentType={this.state.contentType} link={this.state.link} />
           </div>
-          <div className="col-xs-6">
+          <div className="col-sm-6">
             <DocumentationView semantics={this.state.documentation} />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-sm-12">
+          <div className="panel panel-default">
+            <div className="panel-heading">
+              <h4 className="panel-title">Examples</h4>
+            </div>
+            <div className="panel-body">
+              <a onClick={this.handleClickExample.bind(this)}
+                 href={this.currentPath + 'github-user.json'}
+                 data-profile={this.currentPath + 'github-user-alps.json'}
+                 className="btn btn-default">
+                <span className="glyphicon glyphicon-user"></span> GitHub User
+              </a>
+            </div>
+          </div>
           </div>
         </div>
       </div>

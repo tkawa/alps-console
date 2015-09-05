@@ -6,6 +6,10 @@ class UrlInput extends React.Component {
     this.state = {value: props.value};
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({value: nextProps.value});
+  }
+
   handleChange(event) {
     this.setState({value: event.target.value});
   }

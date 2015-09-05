@@ -7,15 +7,22 @@ class AddressBar extends React.Component {
     this.state = {profileEnabled: false};
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({profileEnabled: !!nextProps.profileUrl});
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     const documentUrl = this.refs.document.state.value;
-    const profileUrl = this.refs.profile.state.value;
+    let profileUrl = ''
+    if (this.state.profileEnabled) {
+      profileUrl = this.refs.profile.state.value;
+    }
     this.props.onSubmit(documentUrl, profileUrl);
   }
 
   handleChangeProfileEnabled(event) {
-    const profileEnabled = event.target.checked;
+    const profileEnabled = event.currentTarget.checked;
     this.setState({profileEnabled});
   }
 
@@ -25,7 +32,7 @@ class AddressBar extends React.Component {
         <div className="container-fluid">
           <form id="addressbar" className="navbar-form form-inline" onSubmit={this.handleSubmit.bind(this)}>
             <div className="row">
-              <div className="col-xs-6">
+              <div className="col-sm-6">
                 <label htmlFor="document-url">Document URL:</label>
                 <div className="form-group">
                   <div className="input-group">
@@ -38,11 +45,11 @@ class AddressBar extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="col-xs-6">
+              <div className="col-sm-6">
                 <label htmlFor="profile-url">Profile URL:</label>
                 <div className="checkbox">
                   <label>
-                    <input type="checkbox" onChange={this.handleChangeProfileEnabled.bind(this)} /> Manual set
+                    <input type="checkbox" onChange={this.handleChangeProfileEnabled.bind(this)} checked={this.state.profileEnabled}/> Manual set
                   </label>
                 </div>
                 <div className="form-group">
