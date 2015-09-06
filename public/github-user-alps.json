@@ -18,7 +18,7 @@
           },
           {
             "id": "avatar_url",
-            "type": "semantic",
+            "type": "safe",
             "href": "http://alps.io/schema.org/Person#image"
           },
           {
@@ -44,7 +44,31 @@
             "rt": "#User"
           },
           {
+            "id": "gists_url",
+            "type": "safe"
+          },
+          {
+            "id": "starred_url",
+            "type": "safe"
+          },
+          {
+            "id": "subscriptions_url",
+            "type": "safe"
+          },
+          {
+            "id": "organizations_url",
+            "type": "safe"
+          },
+          {
             "id": "repos_url",
+            "type": "safe"
+          },
+          {
+            "id": "events_url",
+            "type": "safe"
+          },
+          {
+            "id": "received_events_url",
             "type": "safe"
           },
           {
@@ -58,6 +82,12 @@
             "href": "http://alps.io/schema.org/Person#worksFor"
           },
           {
+            "id": "blog",
+            "type": "safe",
+            "href": "http://alps.io/schema.org/Person#worksFor",
+            "doc": "Blog URL of the user."
+          },
+          {
             "id": "location",
             "type": "semantic",
             "href": "http://alps.io/schema.org/Person#homeLocation"
@@ -65,7 +95,13 @@
           {
             "id": "email",
             "type": "semantic",
-            "href": "http://alps.io/schema.org/Person#email"
+            "href": "http://alps.io/schema.org/Person#email",
+            "doc": "Publicly visible email address of the user. The value is null if the user has not specified a public email address in their profile."
+          },
+          {
+            "id": "hireable",
+            "type": "semantic",
+            "doc": "Hiring availability of the user."
           },
           {
             "id": "bio",
