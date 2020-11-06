@@ -3,7 +3,7 @@ import {ProfileFetcher} from 'alpinist';
 class RewriteProfileFetcher extends ProfileFetcher {
   fetch(url, as) {
     let matches;
-    if (matches = url.match(/^http:\/\/alps\.io\/schema\.org\/(.*)$/)) {
+    if (matches = url.match(/^http:\/\/alps\.io\/schema\.org\/(.*?)(\.xml)?$/)) {
       if (!as) {
         as = url;
       }
