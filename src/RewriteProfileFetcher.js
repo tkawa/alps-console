@@ -7,7 +7,7 @@ class RewriteProfileFetcher extends ProfileFetcher {
       if (!as) {
         as = url;
       }
-      url = `https://rawgit.com/alps-io/imports/master/schema.org/output/${matches[1]}.xml`;
+      url = `https://rawgit.com/alps-io/imports/master/schema.org/types/${matches[1]}.json`;
     } else if (url === 'http://alps.io/iana/relations') {
       if (!as) {
         as = url;
